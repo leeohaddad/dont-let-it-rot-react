@@ -12,8 +12,13 @@ var {
 } = ReactNative;
 var ToolbarAndroid = require('ToolbarAndroid');
 var Product = require("./Product");
+var DatabaseManager = require("./DatabaseManager");
+var databaseManager = new DatabaseManager();
 
 var HomeScreen = React.createClass({
+  componentDidMount: function() {
+    databaseManager.openDatabase();
+  },
   getInitialState: function() {
     return {
       toolbarSwitch: false,
