@@ -37,6 +37,11 @@ var HomeScreen = React.createClass({
           <Product />
           <Product />
           <Product />
+          <Product />
+          <Product />
+          <Product />
+          <Product />
+          <Product />
         </ScrollView>
       </View>
     );
@@ -54,7 +59,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#aaaaaa',
+    backgroundColor: '#4b0082',
   },
   toolbar: {
     backgroundColor: '#00aaaa',
