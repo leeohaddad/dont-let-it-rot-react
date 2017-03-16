@@ -47,12 +47,18 @@ var HomeScreen = React.createClass({
     );
   },
   _onActionSelected: function(position) {
-    alert("selected: " + position);
+    if (position == 0) {
+      alert("List products!");
+    }
+    else if (position == 1) {
+      alert("Add a new product!");
+    }
   },
 });
 
 var toolbarActions = [
-  {title: 'Settings', icon: require('../img/icon_settings.png'), show: 'always'},
+  {title: 'List', icon: require('../img/icon_list.png'), show: 'always'},
+  {title: 'Add', icon: require('../img/icon_plus.png'), show: 'always'},
 ];
 
 const styles = StyleSheet.create({
