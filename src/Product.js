@@ -33,15 +33,15 @@ var Product = React.createClass({
                 <View style={{flex:0.7, flexDirection:'column', alignItems:'center'}}>
                   <View style={{flex:0.15}} />
                   <View style={{flex:0.1}}>
-                    <Text style={styles.titleText}>Nome do Produto</Text>
+                    <Text style={styles.titleText}>{this.props.name || "Nome do Produto"}</Text>
                   </View>
                   <View style={{flex:0.2}} />
                   <View style={{flex:0.1}}>
-                    <Text style={styles.baseText}>Quantidade</Text>
+                    <Text style={styles.baseText}>Quantidade: {this.props.quantity || 0}</Text>
                   </View>
                   <View style={{flex:0.2}} />
                   <View style={{flex:0.1}}>
-                    <Text style={styles.baseText}>Validade</Text>
+                    <Text style={styles.baseText}>{this.props.expireDate || '00/00/0000'}</Text>
                   </View>
                   <View style={{flex:0.15}} />
                 </View>

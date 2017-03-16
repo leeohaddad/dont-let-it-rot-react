@@ -34,13 +34,14 @@ var HomeScreen = React.createClass({
           title="Don't Let It Rot!"
           titleColor="#ffffff" />
         <ScrollView>
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
+          <Product name='Abóbora' quantity='2' expireDate='20/03/2017' />
+          <Product name='Feijão' quantity='2' expireDate='22/03/2017' />
+          <Product name='Macarrão' quantity='1' expireDate='23/03/2017' />
+          <Product name='Cebola' quantity='2' expireDate='21/03/2017' />
+          <Product name='Banana' quantity='6' expireDate='18/03/2017' />
+          <Product name='Tomate' quantity='5' expireDate='25/03/2017' />
+          <Product name='Queijo' quantity='1' expireDate='23/03/2017' />
+          <Product name='Pão' quantity='2' expireDate='20/03/2017' />
           <Product />
         </ScrollView>
       </View>
