@@ -56,15 +56,15 @@ var HomeScreen = React.createClass({
         titleColor: '#3b5998',
         subtitleColor: '#6a7180',
       },
-      currList: [{productId:0, name:'Nome do Produto', quantity:0, expireDate:'31/02/2042'}],
-      productsList: [{productId:0, name:'Escolher produto...'}],
+      currList: [{productId:0, name:'Nome do Produto', quantity:0, expireDate:'31/02/2042', avatarSource:require('../img/placeholder.jpg')}],
+      productsList: [{productId:0, name:'Escolher produto...', avatarSource:require('../img/placeholder.jpg')}],
       addProduct: false,
       listProducts: false
     };
   },
   render: function () {
     let MyProductsList = this.state.currList.map((a, i) => {
-      return <Product productId={a.productId} name={a.name} quantity={a.quantity} expireDate={a.expireDate} database={databaseManager} root={this} key={i} />                            
+      return <Product productId={a.productId} name={a.name} quantity={a.quantity} expireDate={a.expireDate} avatarSource={a.avatarSource} database={databaseManager} root={this} key={i} />                            
     })
     return (
       <View style={{flex:1}}>

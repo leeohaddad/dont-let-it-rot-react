@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.pgsqlite.SQLitePluginPackage;
 import com.github.yamill.orientation.OrientationPackage;
+import com.imagepicker.ImagePickerPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -27,7 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new SQLitePluginPackage(),
-          new OrientationPackage()
+          new OrientationPackage(),
+          new ImagePickerPackage()
       );
     }
   };

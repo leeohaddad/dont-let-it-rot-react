@@ -15,6 +15,15 @@ var {
   View
 } = ReactNative;
 var ToolbarAndroid = require('ToolbarAndroid');
+var ImagePicker = require('react-native-image-picker');
+
+var options = {
+  title: 'Escolher Foto',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images'
+  }
+};
 
 var ListProducts = React.createClass({
   componentDidMount: function() {
@@ -22,7 +31,8 @@ var ListProducts = React.createClass({
   },
   getInitialState: function() {
     return {
-      newProduct: ''
+      newProduct: '',
+      avatarSource: require('../img/placeholder.jpg')
     };
   },
   render: function () {
@@ -80,21 +90,43 @@ var ListProducts = React.createClass({
       </View>
     );
   },
-  _onActionSelected: function(position) {
+  _onActionSelected: function (position) {
     if (position == 0) {
       this.props.root.setState({listProducts: false});
     }
   },
-  _onPressAdicionarProduto: function() {
+  saveNewProduct: function () {
+    var that = this;
+    this.props.database.addProductName(this.state.newProduct.trim(), this.state.avatarSource, () => {
+      that.props.root.updateProductsList();
+    });
+    this.setState({newProduct: ''});
+  },
+  _onPressAdicionarProduto: function () {
     if (this.state.newProduct == undefined || this.state.newProduct.trim().length == 0) {
       alert("Defina um nome para o produto!");
       return;
     }
     var that = this;
-    this.props.database.addProductName(this.state.newProduct.trim(), () => {
-      that.props.root.updateProductsList();
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+        alert("error picking image: " + response.error);
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else {
+        let source = { uri: response.uri };
+        // You can also display the image using data:
+        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+        this.setState({
+          avatarSource: source
+        });
+      }
+      that.saveNewProduct();
     });
-    this.setState({newProduct: ''});
   },
 });
 

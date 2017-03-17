@@ -50,7 +50,7 @@ var Product = React.createClass({
                   <View style={{flex:0.8, flexDirection:'row'}}>
                     <View style={{flex:0.1}} />
                     <View style={{flex:0.8}}>
-                      <Image source={require('../img/placeholder.jpg')}
+                      <Image source={this.props.avatarSource}
                              style={styles.image} />
                     </View>
                     <View style={{flex:0.1}} />

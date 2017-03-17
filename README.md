@@ -17,7 +17,6 @@
 * JSON
 
 ### To-do:
-* Implement myProduct pictures
 * Implement productName removal
 * Dismiss keyboard when calendar opens
 * Keyboard design problem

@@ -35,18 +35,18 @@ var DatabaseManager = React.createClass({
       }
     },
 
-    addProductName: function (name,callback) {
-      db.transaction((pdb) => this.checkDuplicatesToAddProductName(pdb,name,callback),() => alert("FAIL: Transaction checkDuplicatesToAddProductName"),function() {
+    addProductName: function (name,img,callback) {
+      db.transaction((pdb) => this.checkDuplicatesToAddProductName(pdb,name,img,callback),() => alert("FAIL: Transaction checkDuplicatesToAddProductName"),function() {
         console.log("OK: Transaction checkDuplicatesToAddProductName");
       });
     },
 
-    checkDuplicatesToAddProductName: function (db,name,callback) {
+    checkDuplicatesToAddProductName: function (db,name,img,callback) {
       db.executeSql('SELECT * FROM ProductName WHERE name="' + name + '"', [],
-        (pdb,presults) => this.checkDuplicatesResultsToAddProductName(pdb,presults,name,callback), () => alert("FAIL: SELECT FROM ProductName"));
+        (pdb,presults) => this.checkDuplicatesResultsToAddProductName(pdb,presults,name,img,callback), () => alert("FAIL: SELECT FROM ProductName"));
     },
 
-    checkDuplicatesResultsToAddProductName: function (db,results,name,callback) {
+    checkDuplicatesResultsToAddProductName: function (db,results,name,img,callback) {
       if (results != undefined) {
         var len = results.rows.length;
         if (len > 0) {
@@ -54,7 +54,7 @@ var DatabaseManager = React.createClass({
           alert('O produto "' + name + '" já está cadastrado!');
         }
         else {
-          db.executeSql('INSERT INTO ProductName (name) VALUES ("' + name + '");', [], () => this.addedSuccesfully(callback), () => alert("FAIL: Insert ProductName"));
+          db.executeSql('INSERT INTO ProductName (name,avatarSource) VALUES ("' + name + '","' + img.uri + '");', [], () => this.addedSuccesfully(callback), () => alert("FAIL: Insert ProductName"));
         }
       }
       else alert("Results is undefined!");  
@@ -116,7 +116,7 @@ var DatabaseManager = React.createClass({
         var result = "Result:";
         for (let i = 0; i < len; i++) {
           let row = results.rows.item(i);
-          data.push({productId: row.product_id, name: row.name});
+          data.push({productId: row.product_id, name: row.name, avatarSource: {uri: row.avatarSource}});
           result = result + " " + row.name + ";";
         }
         callback(data);
@@ -133,7 +133,7 @@ var DatabaseManager = React.createClass({
     },
 
     queryMyProducts: function (db,callback) {
-      db.executeSql('SELECT MyProduct.*, ProductName.name FROM MyProduct, ProductName WHERE ProductName.product_id = MyProduct.fk_product_id', [],
+      db.executeSql('SELECT MyProduct.*, ProductName.name, ProductName.avatarSource FROM MyProduct, ProductName WHERE ProductName.product_id = MyProduct.fk_product_id', [],
         (pdb,presults) => this.queryMyProductsSuccess(pdb,presults,callback), () => alert("FAIL: SELECT FROM ProductName"));
     },
 
@@ -144,7 +144,7 @@ var DatabaseManager = React.createClass({
         var result = "Result:";
         for (let i = 0; i < len; i++) {
           let row = results.rows.item(i);
-          data.push({productId: row.fk_product_id, name: row.name, quantity: row.quantity, expireDate: row.expireDate});
+          data.push({productId: row.fk_product_id, name: row.name, avatarSource: {uri: row.avatarSource}, quantity: row.quantity, expireDate: row.expireDate});
           result = result + " " + row.fk_product_id + " " + row.quantity + " " + row.expireDate + " " + row.name + ";";
         }
         callback(data);
@@ -189,7 +189,8 @@ var DatabaseManager = React.createClass({
 
       db.executeSql('CREATE TABLE IF NOT EXISTS ProductName( '
         + 'product_id INTEGER PRIMARY KEY AUTOINCREMENT, '
-        + 'name VARCHAR(30) ); ', [], () => console.log("OK: CREATE TABLE ProductName"), () => alert("FAIL: CREATE TABLE ProductName"));
+        + 'name VARCHAR(30), '
+        + 'avatarSource VARCHAR(100) ); ', [], () => console.log("OK: CREATE TABLE ProductName"), () => alert("FAIL: CREATE TABLE ProductName"));
 
       db.executeSql('CREATE TABLE IF NOT EXISTS MyProduct( '
         + 'id INTEGER PRIMARY KEY AUTOINCREMENT, '
@@ -198,8 +199,8 @@ var DatabaseManager = React.createClass({
         + 'expireDate VARCHAR(10), '
         + 'FOREIGN KEY ( fk_product_id ) REFERENCES ProductName ( product_id )); ', [], () => console.log("OK: CREATE TABLE MyProduct"), () => alert("FAIL: CREATE TABLE MyProduct"));
 
-      db.executeSql('INSERT INTO ProductName (name) VALUES ("Abóbora");', [], () => console.log("OK: Insert ProductName Abóbora"), () => alert("FAIL: Insert ProductName Abóbora"));
-      db.executeSql('INSERT INTO ProductName (name) VALUES ("Fraldinha");', [], () => console.log("OK: Insert ProductName Fraldinha"), () => alert("FAIL: Insert ProductName Fraldinha"));
+      db.executeSql('INSERT INTO ProductName (name,avatarSource) VALUES ("Abóbora","../img/placeholder.jpg");', [], () => console.log("OK: Insert ProductName Abóbora"), () => alert("FAIL: Insert ProductName Abóbora"));
+      db.executeSql('INSERT INTO ProductName (name,avatarSource) VALUES ("Fraldinha","../img/placeholder.jpg");', [], () => console.log("OK: Insert ProductName Fraldinha"), () => alert("FAIL: Insert ProductName Fraldinha"));
 
       console.log("Database was created successfully!");
     },
