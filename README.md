@@ -18,7 +18,6 @@
 
 ### To-do:
 * Implement myProduct pictures
-* Implement expireDate sorting
 * Implement productName removal
 * Lock orientation
 * Dismiss keyboard when calendar opens
