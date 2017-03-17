@@ -22,12 +22,20 @@ var HomeScreen = React.createClass({
   componentDidMount: function () {
     databaseManager.openDatabase();
     this.updateCurrentList();
+    this.updateProductsList();
   },
   updateCurrentList: function () {
     databaseManager.requestMyProductsList((data) => this.setCurrentList(data));
   },
   setCurrentList: function (data) {
     this.setState({currList: data});
+  },
+  updateProductsList: function () {
+    databaseManager.requestProductNamesList((data) => this.setProductsList(data));
+  },
+  setProductsList: function (data) {
+    data.unshift({productId:0, name:'Escolher produto...'});
+    this.setState({productsList: data});
   },
   getInitialState: function() {
     return {
@@ -37,6 +45,7 @@ var HomeScreen = React.createClass({
         subtitleColor: '#6a7180',
       },
       currList: [{productId:0, name:'Nome do Produto', quantity:0, expireDate:'31/02/2042'}],
+      productsList: [{productId:0, name:'Escolher produto...'}],
       addProduct: false,
       listProducts: false
     };

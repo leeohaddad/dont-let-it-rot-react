@@ -21,19 +21,9 @@ import DatePicker from 'react-native-datepicker'
 
 var AddProduct = React.createClass({
   componentDidMount: function() {
-    this.updateProductsList();
-  },
-  updateProductsList: function () {
-    this.props.database.requestProductNamesList((data) => this.setProductsList(data));
-  },
-  setProductsList: function (data) {
-    data.unshift({productId:0, name:'Escolher produto...'});
-    this.setState({productsList: data});
   },
   getInitialState: function() {
     return {
-      productsList: [{productId:0, name:'Escolher produto...'}],
-      listProducts: false,
       productId: 0,
       quantity: '0',
       expireDate: (this.ensureTwoDigits(new Date().getDate())+"/"+this.ensureTwoDigits(new Date().getMonth())+"/"+(new Date().getFullYear()))
@@ -45,7 +35,7 @@ var AddProduct = React.createClass({
     return input;
   },
   render: function () {
-    let ProductsList = this.state.productsList.map((a, i) => {
+    let ProductsList = this.props.root.state.productsList.map((a, i) => {
       return <Picker.Item label={a.name} value={a.productId} key={i} />
     })
     return (
@@ -75,7 +65,7 @@ var AddProduct = React.createClass({
                 onValueChange={(pId) => this.setState({productId: pId})}>
                 {ProductsList}
               </Picker>
-              <View style={{flex:0.1}} />
+              <View style={{flex:0.05}} />
               <View style={{flex:0.1, alignItems:'center'}}>
                 <Text style={{flex:0.1}}>Quantidade</Text>           
               </View>
@@ -88,7 +78,7 @@ var AddProduct = React.createClass({
                   value={this.state.quantity} />
                 <View style={{flex:0.4}} />
               </View>
-              <View style={{flex:0.1}} />
+              <View style={{flex:0.15}} />
               <View style={{flex:0.1, alignItems:'center'}}>
                 <Text style={{flex:0.1}}>Data de Validade</Text>           
               </View>
@@ -125,7 +115,7 @@ var AddProduct = React.createClass({
                     onPress={() => this.props.root.setState({addProduct: false})}
                     title="Cancelar"
                     color="#00aaaa"
-                    accessibilityLabel="Cancelar a adição do novo produto." />
+                    accessibilityLabel="Cancelar o registro de uma nova compra." />
                 </View>
                 <View style={{flex:0.1}} />
                 <View style={{flex:0.35}}>
@@ -133,7 +123,7 @@ var AddProduct = React.createClass({
                     onPress={this._onPressSalvar}
                     title="Salvar"
                     color="#00aaaa"
-                    accessibilityLabel="Concluir a adição do novo produto." />
+                    accessibilityLabel="Concluir o registro de uma nova compra." />
                 </View>
                 <View style={{flex:0.1}} />
               </View>

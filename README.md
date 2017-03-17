@@ -18,8 +18,12 @@
 
 ### To-do:
 * Implement ListProducts screen
-* Implement product removal
-* Implement product pictures
+* Implement myProduct removal
+* Implement myProduct pictures
 * Implement expireDate sorting
+* Implement productName removal
 * Lock orientation
+* Dismiss keyboard when calendar opens
+* Keyboard design problem
 * Configure appIcon
+* Add some useful comments

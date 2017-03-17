@@ -10,7 +10,9 @@ const database_displayname = "DontLetItRot";
 const database_size = 200000;
 let db;
 
+const RESET_DB = false;
 var myProductsList = [];
+
 
 var DatabaseManager = React.createClass({
 
@@ -31,6 +33,31 @@ var DatabaseManager = React.createClass({
       } else {
         console.log("Database was not OPENED");
       }
+    },
+
+    addProductName: function (name,callback) {
+      db.transaction((pdb) => this.checkDuplicatesToAddProductName(pdb,name,callback),() => alert("FAIL: Transaction checkDuplicatesToAddProductName"),function() {
+        console.log("OK: Transaction checkDuplicatesToAddProductName");
+      });
+    },
+
+    checkDuplicatesToAddProductName: function (db,name,callback) {
+      db.executeSql('SELECT * FROM ProductName WHERE name="' + name + '"', [],
+        (pdb,presults) => this.checkDuplicatesResultsToAddProductName(pdb,presults,name,callback), () => alert("FAIL: SELECT FROM ProductName"));
+    },
+
+    checkDuplicatesResultsToAddProductName: function (db,results,name,callback) {
+      if (results != undefined) {
+        var len = results.rows.length;
+        if (len > 0) {
+          console.log('Product "' + name + '" is already registered!');
+          alert('O produto "' + name + '" já está cadastrado!');
+        }
+        else {
+          db.executeSql('INSERT INTO ProductName (name) VALUES ("' + name + '");', [], () => this.addedSuccesfully(callback), () => alert("FAIL: Insert ProductName"));
+        }
+      }
+      else alert("Results is undefined!");  
     },
 
     addMyProduct: function (id,qtty,expireDate,callback) {
@@ -59,7 +86,7 @@ var DatabaseManager = React.createClass({
     },
 
     addedSuccesfully: function (callback) {
-      console.log("OK: Insert MyProduct");
+      console.log("OK: INSERT");
       callback();
     },
 
@@ -121,8 +148,8 @@ var DatabaseManager = React.createClass({
 
     setupDatabase: function (db) {
       var that = this;
-      // Remove comment below to reset the database.
-      // db.executeSql('DROP TABLE IF EXISTS Version;', [], () => console.log("OK: DROP TABLE Version"), () => alert("FAIL: DROP TABLE Version"));
+      if (RESET_DB)
+        db.executeSql('DROP TABLE IF EXISTS Version;', [], () => console.log("OK: DROP TABLE Version"), () => alert("FAIL: DROP TABLE Version"));
       db.executeSql('SELECT 1 FROM Version LIMIT 1', [],
         function () {
           console.log("Database is ready!");
