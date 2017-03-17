@@ -93,7 +93,7 @@ var ListProducts = React.createClass({
     var that = this;
     this.props.database.addProductName(this.state.newProduct.trim(), () => {
       that.props.root.updateProductsList();
-    })
+    });
     this.setState({newProduct: ''});
   },
 });

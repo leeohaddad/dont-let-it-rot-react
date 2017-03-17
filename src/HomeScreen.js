@@ -52,7 +52,7 @@ var HomeScreen = React.createClass({
   },
   render: function () {
     let MyProductsList = this.state.currList.map((a, i) => {
-      return <Product productId={a.productId} name={a.name} quantity={a.quantity} expireDate={a.expireDate} key={i} />                            
+      return <Product productId={a.productId} name={a.name} quantity={a.quantity} expireDate={a.expireDate} database={databaseManager} root={this} key={i} />                            
     })
     return (
       <View style={{flex:1}}>

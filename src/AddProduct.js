@@ -153,7 +153,7 @@ var AddProduct = React.createClass({
     this.props.database.addMyProduct(this.state.productId, this.state.quantity, this.state.expireDate, () => {
       that.props.root.setState({addProduct: false});
       that.props.root.updateCurrentList();
-    })
+    });
   },
 });
 

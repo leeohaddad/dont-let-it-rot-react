@@ -90,6 +90,14 @@ var DatabaseManager = React.createClass({
       callback();
     },
 
+    decreaseMyProduct: function (id,expireDate,callback) {
+      db.executeSql('UPDATE MyProduct SET quantity=quantity-1 WHERE fk_product_id=' + id + ' AND expireDate="' + expireDate + '";', [], () => callback(), () => alert("FAIL: Decrease MyProduct"));
+    },
+
+    removeMyProduct: function (id,expireDate,callback) {
+      db.executeSql('DELETE FROM MyProduct WHERE fk_product_id=' + id + ' AND expireDate="' + expireDate + '";', [], () => callback(), () => alert("FAIL: Remove MyProduct"));
+    },
+
     requestProductNamesList: function (callback) {
       db.transaction((pdb) => this.queryProducts(pdb,callback),() => alert("FAIL: Transaction queryMyProducts"),function() {
         console.log("OK: Transaction queryMyProducts");

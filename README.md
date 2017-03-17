@@ -17,8 +17,6 @@
 * JSON
 
 ### To-do:
-* Implement ListProducts screen
-* Implement myProduct removal
 * Implement myProduct pictures
 * Implement expireDate sorting
 * Implement productName removal

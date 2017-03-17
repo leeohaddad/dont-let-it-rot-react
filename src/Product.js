@@ -13,8 +13,8 @@ var {
 } = ReactNative;
 const Swipeable = require('react-native-swipeable').default;
 
-const removeOne = <View style={{flex:1, backgroundColor:'#ffa500'}} />;
-const removeAll = <View style={{flex:1, backgroundColor:'#ff0000'}} />;
+const removeOne = <View style={{flex:1, backgroundColor:'#ffa500', alignItems:'flex-end', justifyContent:'center'}}><Text style={{fontSize:25, fontWeight:'bold'}}>-1  </Text></View>;
+const removeAll = <View style={{flex:1, backgroundColor:'#ff0000', alignItems:'flex-start', justifyContent:'center'}}><Text style={{fontSize:25, fontWeight:'bold', fontColor:'#ffffff'}}>  deletar</Text></View>;
 
 var Product = React.createClass({
   render: function () {
@@ -69,10 +69,22 @@ var Product = React.createClass({
     );
   },
   _removeMe: function () {
-    alert("Remove Me!");
+    // alert("Remove Me: pid=" + this.props.productId + ", name=" + this.props.name + ", qtty=" + this.props.quantity + ", expireDate=" + this.props.expireDate + " !");
+    if (this.props.quantity == 1) {
+      this._removeUs();
+      return;
+    }
+    var that = this;
+    this.props.database.decreaseMyProduct(this.props.productId, this.props.expireDate, () => {
+      that.props.root.updateCurrentList();
+    });
   },
   _removeUs: function () {
-    alert("Remove Us!");
+    // alert("Remove Us: pid=" + this.props.productId + ", name=" + this.props.name + ", qtty=" + this.props.quantity + ", expireDate=" + this.props.expireDate + " !");
+    var that = this;
+    this.props.database.removeMyProduct(this.props.productId, this.props.expireDate, () => {
+      that.props.root.updateCurrentList();
+    });
   },
 });
 
