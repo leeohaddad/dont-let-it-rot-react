@@ -10,6 +10,8 @@ const database_displayname = "DontLetItRot";
 const database_size = 200000;
 let db;
 
+var myProductsList = [];
+
 var DatabaseManager = React.createClass({
 
     componentWillUnmount: function () {
@@ -31,27 +33,95 @@ var DatabaseManager = React.createClass({
       }
     },
 
-    queryProducts: function (db) {
-      db.executeSql('SELECT * FROM ProductName', [],
-        this.queryProductsSuccess, () => alert("FAIL: SELECT FROM ProductName"));
+    addMyProduct: function (id,qtty,expireDate,callback) {
+      db.transaction((pdb) => this.checkDuplicatesToAddMyProduct(pdb,id,qtty,expireDate,callback),() => alert("FAIL: Transaction checkDuplicatesToAddMyProduct"),function() {
+        console.log("OK: Transaction checkDuplicatesToAddMyProduct");
+      });
     },
 
-    queryProductsSuccess: function (db,results) {
+    checkDuplicatesToAddMyProduct: function (db,id,qtty,expireDate,callback) {
+      db.executeSql('SELECT * FROM MyProduct WHERE fk_product_id=' + id +
+                    ' AND expireDate="' + expireDate + '"', [],
+        (pdb,presults) => this.checkDuplicatesResultsToAddMyProduct(pdb,presults,id,qtty,expireDate,callback), () => alert("FAIL: SELECT FROM ProductName"));
+    },
+
+    checkDuplicatesResultsToAddMyProduct: function (db,results,id,qtty,expireDate,callback) {
       if (results != undefined) {
         var len = results.rows.length;
+        if (len > 0) {
+          db.executeSql('UPDATE MyProduct SET quantity=quantity+' + qtty + ' WHERE fk_product_id=' + id + ' AND expireDate="' + expireDate + '";', [], () => this.addedSuccesfully(callback), () => alert("FAIL: Update MyProduct"));
+        }
+        else {
+          db.executeSql('INSERT INTO MyProduct (fk_product_id, quantity, expireDate) VALUES (' + id + ', ' + qtty + ', "' + expireDate + '");', [], () => this.addedSuccesfully(callback), () => alert("FAIL: Insert MyProduct"));
+        }
+      }
+      else alert("Results is undefined!");  
+    },
+
+    addedSuccesfully: function (callback) {
+      console.log("OK: Insert MyProduct");
+      callback();
+    },
+
+    requestProductNamesList: function (callback) {
+      db.transaction((pdb) => this.queryProducts(pdb,callback),() => alert("FAIL: Transaction queryMyProducts"),function() {
+        console.log("OK: Transaction queryMyProducts");
+      });
+    },
+
+    queryProducts: function (db, callback) {
+      db.executeSql('SELECT * FROM ProductName', [],
+        (pdb,presults) => this.queryProductsSuccess(pdb,presults,callback), () => alert("FAIL: SELECT FROM ProductName"));
+    },
+
+    queryProductsSuccess: function (db,results, callback) {
+      if (results != undefined) {
+        var len = results.rows.length;
+        var data = [];
         var result = "Result:";
         for (let i = 0; i < len; i++) {
           let row = results.rows.item(i);
+          data.push({productId: row.product_id, name: row.name});
           result = result + " " + row.name + ";";
         }
+        callback(data);
         console.log(result);
-        alert(result + " (" + len + ")");  
+        // alert(result);
+      }
+      else alert("Results is undefined!");  
+    },
+
+    requestMyProductsList: function (callback) {
+      db.transaction((pdb) => this.queryMyProducts(pdb,callback),() => alert("FAIL: Transaction queryMyProducts"),function() {
+        console.log("OK: Transaction queryMyProducts");
+      });
+    },
+
+    queryMyProducts: function (db,callback) {
+      db.executeSql('SELECT MyProduct.*, ProductName.name FROM MyProduct, ProductName WHERE ProductName.product_id = MyProduct.fk_product_id', [],
+        (pdb,presults) => this.queryMyProductsSuccess(pdb,presults,callback), () => alert("FAIL: SELECT FROM ProductName"));
+    },
+
+    queryMyProductsSuccess: function (db,results,callback) {
+      if (results != undefined) {
+        var len = results.rows.length;
+        var data = [];
+        var result = "Result:";
+        for (let i = 0; i < len; i++) {
+          let row = results.rows.item(i);
+          data.push({productId: row.fk_product_id, name: row.name, quantity: row.quantity, expireDate: row.expireDate});
+          result = result + " " + row.fk_product_id + " " + row.quantity + " " + row.expireDate + " " + row.name + ";";
+        }
+        callback(data);
+        console.log(result);
+        // alert(result);
       }
       else alert("Results is undefined!");  
     },
 
     setupDatabase: function (db) {
       var that = this;
+      // Remove comment below to reset the database.
       // db.executeSql('DROP TABLE IF EXISTS Version;', [], () => console.log("OK: DROP TABLE Version"), () => alert("FAIL: DROP TABLE Version"));
       db.executeSql('SELECT 1 FROM Version LIMIT 1', [],
         function () {
@@ -89,6 +159,7 @@ var DatabaseManager = React.createClass({
       db.executeSql('CREATE TABLE IF NOT EXISTS MyProduct( '
         + 'id INTEGER PRIMARY KEY AUTOINCREMENT, '
         + 'fk_product_id INTEGER, '
+        + 'quantity INTEGER, '
         + 'expireDate VARCHAR(10), '
         + 'FOREIGN KEY ( fk_product_id ) REFERENCES ProductName ( product_id )); ', [], () => console.log("OK: CREATE TABLE MyProduct"), () => alert("FAIL: CREATE TABLE MyProduct"));
 

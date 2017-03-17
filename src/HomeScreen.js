@@ -6,18 +6,28 @@ var {
 } = React;
 var ReactNative = require('react-native');
 var {
+  Modal,
   StyleSheet,
   ScrollView,
   View
 } = ReactNative;
 var ToolbarAndroid = require('ToolbarAndroid');
 var Product = require("./Product");
+var AddProduct = require("./AddProduct");
+var ListProducts = require("./ListProducts");
 var DatabaseManager = require("./DatabaseManager");
 var databaseManager = new DatabaseManager();
 
 var HomeScreen = React.createClass({
-  componentDidMount: function() {
+  componentDidMount: function () {
     databaseManager.openDatabase();
+    this.updateCurrentList();
+  },
+  updateCurrentList: function () {
+    databaseManager.requestMyProductsList((data) => this.setCurrentList(data));
+  },
+  setCurrentList: function (data) {
+    this.setState({currList: data});
   },
   getInitialState: function() {
     return {
@@ -26,38 +36,52 @@ var HomeScreen = React.createClass({
         titleColor: '#3b5998',
         subtitleColor: '#6a7180',
       },
+      currList: [{productId:0, name:'Nome do Produto', quantity:0, expireDate:'31/02/2042'}],
+      addProduct: false,
+      listProducts: false
     };
   },
   render: function () {
+    let MyProductsList = this.state.currList.map((a, i) => {
+      return <Product productId={a.productId} name={a.name} quantity={a.quantity} expireDate={a.expireDate} key={i} />                            
+    })
     return (
-      <View style={styles.container}>
-        <ToolbarAndroid
-          actions={toolbarActions}
-          logo={require('../img/icon_logo.png')}
-          onActionSelected={this._onActionSelected}
-          style={styles.toolbar}
-          title="Don't Let It Rot!"
-          titleColor="#ffffff" />
-        <ScrollView>
-          <Product name='Abóbora' quantity='2' expireDate='20/03/2017' />
-          <Product name='Feijão' quantity='2' expireDate='22/03/2017' />
-          <Product name='Macarrão' quantity='1' expireDate='23/03/2017' />
-          <Product name='Cebola' quantity='2' expireDate='21/03/2017' />
-          <Product name='Banana' quantity='6' expireDate='18/03/2017' />
-          <Product name='Tomate' quantity='5' expireDate='25/03/2017' />
-          <Product name='Queijo' quantity='1' expireDate='23/03/2017' />
-          <Product name='Pão' quantity='2' expireDate='20/03/2017' />
-          <Product />
-        </ScrollView>
+      <View style={{flex:1}}>
+        <Modal
+          style={{flex:1}}
+          visible={this.state.addProduct}
+          animationType={"slide"}
+          onRequestClose={() => this.setState({addProduct: false})}>
+          <AddProduct database={databaseManager} root={this} />
+        </Modal>
+        <Modal
+          style={{flex:1}}
+          visible={this.state.listProducts}
+          animationType={"slide"}
+          onRequestClose={() => this.setState({listProducts: false})}>
+          <ListProducts database={databaseManager} root={this} />
+        </Modal>
+        <View style={styles.container}>
+          <ToolbarAndroid
+            actions={toolbarActions}
+            logo={require('../img/icon_logo.png')}
+            onActionSelected={this._onActionSelected}
+            style={styles.toolbar}
+            title="Don't Let It Rot!"
+            titleColor="#ffffff" />
+          <ScrollView>
+            {MyProductsList}
+          </ScrollView>
+        </View>
       </View>
     );
   },
   _onActionSelected: function(position) {
     if (position == 0) {
-      alert("List products!");
+      this.setState({listProducts: true});
     }
     else if (position == 1) {
-      alert("Add a new product!");
+      this.setState({addProduct: true});
     }
   },
 });
@@ -71,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#4b0082',
+    backgroundColor: '#ffffff',
   },
   toolbar: {
     backgroundColor: '#00aaaa',
