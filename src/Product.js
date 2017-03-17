@@ -41,7 +41,7 @@ var Product = React.createClass({
                   </View>
                   <View style={{flex:0.2}} />
                   <View style={{flex:0.1}}>
-                    <Text style={styles.baseText}>{this.props.expireDate || '00/00/0000'}</Text>
+                    <Text style={styles.expireDateText}>{this.props.expireDate || '00/00/0000'}</Text>
                   </View>
                   <View style={{flex:0.15}} />
                 </View>
@@ -105,8 +105,14 @@ const styles = StyleSheet.create({
     color: '#4b0082',
   },
   titleText: {
-    color: '#4b0082',
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#4b0082',
+  },
+  expireDateText: {
+    fontFamily: 'Cochin',
+    fontWeight: 'bold',
+    color: '#4b0082',
   },
 });
 

@@ -23,5 +23,6 @@
 * Lock orientation
 * Dismiss keyboard when calendar opens
 * Keyboard design problem
+* Scrollview design problem in ProductsList
 * Configure appIcon
 * Add some useful comments

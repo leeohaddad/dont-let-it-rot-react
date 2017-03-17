@@ -28,6 +28,11 @@ var HomeScreen = React.createClass({
     databaseManager.requestMyProductsList((data) => this.setCurrentList(data));
   },
   setCurrentList: function (data) {
+    data.sort(function (a, b) {
+    a = a.expireDate.split('/');
+    b = b.expireDate.split('/');
+    return a[2] - b[2] || a[1] - b[1] || a[0] - b[0];
+})
     this.setState({currList: data});
   },
   updateProductsList: function () {

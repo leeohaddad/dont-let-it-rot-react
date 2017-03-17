@@ -49,7 +49,7 @@ var ListProducts = React.createClass({
             </View>
             <View style={{flex:0.1}} />
             <TextInput
-              maxLength={30}
+              maxLength={23}
               style={{height: 40, borderColor: 'gray', borderWidth: 1}}
               onChangeText={(text) => this.setState({newProduct: text})}
               value={this.state.newProduct} />
