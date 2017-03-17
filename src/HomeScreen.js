@@ -12,14 +12,21 @@ var {
   View
 } = ReactNative;
 var ToolbarAndroid = require('ToolbarAndroid');
+var Orientation = require('react-native-orientation');
+
 var Product = require("./Product");
 var AddProduct = require("./AddProduct");
 var ListProducts = require("./ListProducts");
 var DatabaseManager = require("./DatabaseManager");
+
 var databaseManager = new DatabaseManager();
 
 var HomeScreen = React.createClass({
   componentDidMount: function () {
+    if (Orientation == undefined || Orientation.lockToPortrait == undefined)
+      alert("undefined!");
+    else
+      Orientation.lockToPortrait();
     databaseManager.openDatabase();
     this.updateCurrentList();
     this.updateProductsList();
