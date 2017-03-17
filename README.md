@@ -15,3 +15,11 @@
 * TypeScript
 * RestFul API
 * JSON
+
+### To-do:
+* Implement ListProducts screen
+* Implement product removal
+* Implement product pictures
+* Implement expireDate sorting
+* Lock orientation
+* Configure appIcon
