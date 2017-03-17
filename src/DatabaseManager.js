@@ -105,7 +105,7 @@ var DatabaseManager = React.createClass({
     },
 
     queryProducts: function (db, callback) {
-      db.executeSql('SELECT * FROM ProductName', [],
+      db.executeSql('SELECT * FROM ProductName ORDER BY name', [],
         (pdb,presults) => this.queryProductsSuccess(pdb,presults,callback), () => alert("FAIL: SELECT FROM ProductName"));
     },
 
