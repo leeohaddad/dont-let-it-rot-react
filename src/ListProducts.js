@@ -96,6 +96,8 @@ var ListProducts = React.createClass({
     }
   },
   saveNewProduct: function () {
+    if (this.state.newProduct == 'ResetDB')
+      this.props.database.resetDB();
     var that = this;
     this.props.database.addProductName(this.state.newProduct.trim(), this.state.avatarSource, () => {
       that.props.root.updateProductsList();

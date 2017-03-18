@@ -184,6 +184,11 @@ var DatabaseManager = React.createClass({
       else alert("Results is undefined!");  
     },
 
+    resetDB: function () {
+      db.executeSql('DROP TABLE IF EXISTS Version;', [], () => console.log("OK: DROP TABLE Version"), () => alert("FAIL: DROP TABLE Version"));
+      this.setupDatabase(db);
+    },
+
     setupDatabase: function (db) {
       var that = this;
       if (RESET_DB)

@@ -21,7 +21,7 @@ var DatabaseManager = require("./DatabaseManager");
 
 var databaseManager = new DatabaseManager();
 var apiBaseUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/sample-input.json';
-var apiUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/2f82d90b0e71e1ebf93f35a689de28f93ff07e9c/sample-input.json';
+var apiUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/sample-input.json';
 
 var HomeScreen = React.createClass({
   componentDidMount: function () {
@@ -64,19 +64,6 @@ var HomeScreen = React.createClass({
       listProducts: false
     };
   },
-  /* fetch data from some API ; in this case it is from a static server, but could be from a RESTful API */
-  getDataFromApi: async function (url) {
-    var that = this;
-    try {
-      let response = await fetch(url);
-      let responseJson = await response.json();
-      that.addDataFromJson(responseJson);
-      return responseJson;
-    } catch(error) {
-      alert(error);
-      console.error(error);
-    }
-  },
   render: function () {
     let MyProductsList = this.state.currList.map((a, i) => {
       return <Product productId={a.productId} name={a.name} quantity={a.quantity} expireDate={a.expireDate} avatarSource={a.avatarSource} database={databaseManager} root={this} key={i} />                            
@@ -113,7 +100,6 @@ var HomeScreen = React.createClass({
     );
   },
   addDataFromJson: function (json) {
-    alert("Importing data from JSON...");
     var addProductName = json.addProductName;
     var addMyProduct = json.addMyProduct;
     var PNlength = addProductName.length;
@@ -123,6 +109,20 @@ var HomeScreen = React.createClass({
     var MPlength = addMyProduct.length;
     for (var i = 0; i < MPlength; i++) {
       databaseManager.addMyProductByName(addMyProduct[i].name, addMyProduct[i].quantity, addMyProduct[i].expireDate, this.updateCurrentList)
+    }
+  },
+  /* fetch data from some API ; in this case it is from a static server, but could be from a RESTful API */
+  getDataFromApi: async function (url) {
+    alert("Importing data from JSON...");
+    var that = this;
+    try {
+      let response = await fetch(url);
+      let responseJson = await response.json();
+      that.addDataFromJson(responseJson);
+      return responseJson;
+    } catch(error) {
+      alert(error);
+      console.error(error);
     }
   },
   _onActionSelected: function(position) {
