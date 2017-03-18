@@ -140,7 +140,10 @@ var DatabaseManager = React.createClass({
         var result = "Result:";
         for (let i = 0; i < len; i++) {
           let row = results.rows.item(i);
-          data.push({productId: row.product_id, name: row.name, avatarSource: {uri: row.avatarSource}});
+          var avatarSource = ( (row.avatarSource == '../img/placeholder.png') ?
+                                require('../img/placeholder.png') :
+                                {uri: row.avatarSource} );
+          data.push({productId: row.product_id, name: row.name, avatarSource: avatarSource});
           result = result + " " + row.name + ";";
         }
         callback(data);
@@ -168,7 +171,10 @@ var DatabaseManager = React.createClass({
         var result = "Result:";
         for (let i = 0; i < len; i++) {
           let row = results.rows.item(i);
-          data.push({productId: row.fk_product_id, name: row.name, avatarSource: {uri: row.avatarSource}, quantity: row.quantity, expireDate: row.expireDate});
+          var avatarSource = ( (row.avatarSource == '../img/placeholder.png') ?
+                                require('../img/placeholder.png') :
+                                {uri: row.avatarSource} );
+          data.push({productId: row.fk_product_id, name: row.name, avatarSource: avatarSource, quantity: row.quantity, expireDate: row.expireDate});
           result = result + " " + row.fk_product_id + " " + row.quantity + " " + row.expireDate + " " + row.name + ";";
         }
         callback(data);
@@ -222,9 +228,6 @@ var DatabaseManager = React.createClass({
         + 'quantity INTEGER, '
         + 'expireDate VARCHAR(10), '
         + 'FOREIGN KEY ( fk_product_id ) REFERENCES ProductName ( product_id )); ', [], () => console.log("OK: CREATE TABLE MyProduct"), () => alert("FAIL: CREATE TABLE MyProduct"));
-
-      db.executeSql('INSERT INTO ProductName (name,avatarSource) VALUES ("Abóbora","../img/placeholder.jpg");', [], () => console.log("OK: Insert ProductName Abóbora"), () => alert("FAIL: Insert ProductName Abóbora"));
-      db.executeSql('INSERT INTO ProductName (name,avatarSource) VALUES ("Fraldinha","../img/placeholder.jpg");', [], () => console.log("OK: Insert ProductName Fraldinha"), () => alert("FAIL: Insert ProductName Fraldinha"));
 
       console.log("Database was created successfully!");
     },

@@ -1,14 +1,14 @@
 {
   "addProductName": [
-    { "name": "Goiaba", "avatarSource": "../img/placeholder.jpg"},
-    { "name": "Mamão", "avatarSource": "../img/placeholder.jpg"},
-    { "name": "Tomate", "avatarSource": "../img/placeholder.jpg"},
+    { "name": "Goiaba", "avatarSource": "http://www.saudedica.com.br/wp-content/uploads/2013/12/Goiaaba.jpg"},
+    { "name": "Mamão", "avatarSource": "../img/placeholder.png"},
+    { "name": "Tomate", "avatarSource": "https://bs.simplusmedia.com/i/f/o/saude/conteudo/tomate.jpg"},
     { "name": "Banana", "avatarSource": "https://bs.simplusmedia.com/i/730/838/banana.jpg"}
   ],
   "addMyProduct": [
-    { "name": "Abóbora", "quantity": 1, "expireDate": "17/09/2017"},
-    { "name": "Abóbora", "quantity": 3, "expireDate": "12/09/2017"},
-    { "name": "Mamão", "quantity": 8, "expireDate": "15/09/2017"}
+    { "name": "Banana", "quantity": 5, "expireDate": "17/09/2017"},
+    { "name": "Tomate", "quantity": 7, "expireDate": "12/09/2017"},
+    { "name": "Mamão", "quantity": 2, "expireDate": "15/09/2017"}
   ],
   "myUrl": "https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/sample-input.json"
 }

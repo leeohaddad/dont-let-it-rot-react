@@ -20,7 +20,8 @@ var ListProducts = require("./ListProducts");
 var DatabaseManager = require("./DatabaseManager");
 
 var databaseManager = new DatabaseManager();
-var apiUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/sample-input.json';
+var apiBaseUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/sample-input.json';
+var apiUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/2f82d90b0e71e1ebf93f35a689de28f93ff07e9c/sample-input.json';
 
 var HomeScreen = React.createClass({
   componentDidMount: function () {
@@ -57,8 +58,8 @@ var HomeScreen = React.createClass({
         titleColor: '#3b5998',
         subtitleColor: '#6a7180',
       },
-      currList: [{productId:0, name:'Nome do Produto', quantity:0, expireDate:'31/02/2042', avatarSource:require('../img/placeholder.jpg')}],
-      productsList: [{productId:0, name:'Escolher produto...', avatarSource:require('../img/placeholder.jpg')}],
+      currList: [{productId:0, name:'Nome do Produto', quantity:0, expireDate:'31/02/2042', avatarSource:require('../img/placeholder.png')}],
+      productsList: [{productId:0, name:'Escolher produto...', avatarSource:require('../img/placeholder.png')}],
       addProduct: false,
       listProducts: false
     };
@@ -117,7 +118,7 @@ var HomeScreen = React.createClass({
     var addMyProduct = json.addMyProduct;
     var PNlength = addProductName.length;
     for (var i = 0; i < PNlength; i++) {
-      databaseManager.addProductName(addProductName[i].name, addProductName[i].avatarSource, this.updateProductsList)
+      databaseManager.addProductName(addProductName[i].name, {uri:addProductName[i].avatarSource}, this.updateProductsList)
     }
     var MPlength = addMyProduct.length;
     for (var i = 0; i < MPlength; i++) {

@@ -32,7 +32,7 @@ var ListProducts = React.createClass({
   getInitialState: function() {
     return {
       newProduct: '',
-      avatarSource: require('../img/placeholder.jpg')
+      avatarSource: {uri: '../img/placeholder.png'}
     };
   },
   render: function () {
