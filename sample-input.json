@@ -11,5 +11,5 @@
     { "name": "Abóbora", "quantity": 3, "expireDate": "12/09/2017"},
     { "name": "Mamão", "quantity": 8, "expireDate": "15/09/2017"}
   ],
-  "myUrl": "https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/input.json"
+  "myUrl": "https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/sample-input.json"
 }

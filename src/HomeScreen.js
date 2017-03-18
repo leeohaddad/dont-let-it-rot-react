@@ -20,7 +20,7 @@ var ListProducts = require("./ListProducts");
 var DatabaseManager = require("./DatabaseManager");
 
 var databaseManager = new DatabaseManager();
-var sampleUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/input.json';
+var sampleUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/sample-input.json';
 
 var HomeScreen = React.createClass({
   componentDidMount: function () {
