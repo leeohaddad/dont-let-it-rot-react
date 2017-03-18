@@ -1,5 +1,15 @@
 # Don't Let It Rot
 
+Do you ever lose part of your food because it rotted?
+If yes, this app is for you!
+Register the expiration dates of your products when you buy them and never let your food rot anymore!
+
+-----
+
+Você às vezes perde parte da sua comida porque ela apodreceu?
+Se sim, esse app é para você!
+Registre as datas de validade dos seus produtos assim que comprá-los e nunca mais deixe suas comidas apodrecerem!
+
 ### Technologies Used:
 * React Native: base of the app
 * ReactJS: used to build react-native components
@@ -17,6 +27,8 @@
 * RestFul API
 
 ### To-do:
+* Push notifications
+* Custom expiration dates colors
 * Implement productName removal
 * Dismiss keyboard when calendar opens
 * Keyboard design problem
