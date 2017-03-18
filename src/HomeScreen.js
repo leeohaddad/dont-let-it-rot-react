@@ -20,28 +20,27 @@ var ListProducts = require("./ListProducts");
 var DatabaseManager = require("./DatabaseManager");
 
 var databaseManager = new DatabaseManager();
-var sampleUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/sample-input.json';
+var apiUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/sample-input.json';
 
 var HomeScreen = React.createClass({
   componentDidMount: function () {
     if (Orientation == undefined || Orientation.lockToPortrait == undefined)
-      alert("undefined!");
+      alert("var Orientation is undefined!");
     else
       Orientation.lockToPortrait();
     databaseManager.openDatabase();
     this.updateCurrentList();
     this.updateProductsList();
-    this.getDataFromApi(sampleUrl);
   },
   updateCurrentList: function () {
     databaseManager.requestMyProductsList((data) => this.setCurrentList(data));
   },
   setCurrentList: function (data) {
     data.sort(function (a, b) {
-    a = a.expireDate.split('/');
-    b = b.expireDate.split('/');
-    return a[2] - b[2] || a[1] - b[1] || a[0] - b[0];
-})
+      a = a.expireDate.split('/');
+      b = b.expireDate.split('/');
+      return a[2] - b[2] || a[1] - b[1] || a[0] - b[0];
+    })
     this.setState({currList: data});
   },
   updateProductsList: function () {
@@ -70,7 +69,7 @@ var HomeScreen = React.createClass({
     try {
       let response = await fetch(url);
       let responseJson = await response.json();
-      that.databaseManager.addDataFromJson(responseJson);
+      that.addDataFromJson(responseJson);
       return responseJson;
     } catch(error) {
       alert(error);
@@ -112,17 +111,35 @@ var HomeScreen = React.createClass({
       </View>
     );
   },
+  addDataFromJson: function (json) {
+    alert("Importing data from JSON...");
+    var addProductName = json.addProductName;
+    var addMyProduct = json.addMyProduct;
+    var PNlength = addProductName.length;
+    for (var i = 0; i < PNlength; i++) {
+      databaseManager.addProductName(addProductName[i].name, addProductName[i].avatarSource, this.updateProductsList)
+    }
+    var MPlength = addMyProduct.length;
+    for (var i = 0; i < MPlength; i++) {
+      databaseManager.addMyProductByName(addMyProduct[i].name, addMyProduct[i].quantity, addMyProduct[i].expireDate, this.updateCurrentList)
+    }
+  },
   _onActionSelected: function(position) {
-    if (position == 0) {
+    var n = 3;
+    if (position == n-3) {
+      this.getDataFromApi(apiUrl);
+    }
+    if (position == n-2) {
       this.setState({listProducts: true});
     }
-    else if (position == 1) {
+    else if (position == n-1) {
       this.setState({addProduct: true});
     }
   },
 });
 
 var toolbarActions = [
+  {title: 'Download', icon: require('../img/icon_download.png'), show: 'always'},
   {title: 'List', icon: require('../img/icon_list.png'), show: 'always'},
   {title: 'Add', icon: require('../img/icon_plus.png'), show: 'always'},
 ];

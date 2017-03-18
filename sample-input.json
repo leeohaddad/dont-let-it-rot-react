@@ -1,10 +1,9 @@
 {
   "addProductName": [
-    { "name": "Abóbora", "avatarSource": "../img/placeholder.jpg"},
     { "name": "Goiaba", "avatarSource": "../img/placeholder.jpg"},
     { "name": "Mamão", "avatarSource": "../img/placeholder.jpg"},
     { "name": "Tomate", "avatarSource": "../img/placeholder.jpg"},
-    { "name": "Banana", "avatarSource": "../img/placeholder.jpg"}
+    { "name": "Banana", "avatarSource": "https://bs.simplusmedia.com/i/730/838/banana.jpg"}
   ],
   "addMyProduct": [
     { "name": "Abóbora", "quantity": 1, "expireDate": "17/09/2017"},

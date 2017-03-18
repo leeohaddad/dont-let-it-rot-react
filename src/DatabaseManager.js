@@ -60,6 +60,30 @@ var DatabaseManager = React.createClass({
       else alert("Results is undefined!");  
     },
 
+    addMyProductByName: function (name,qtty,expireDate,callback) {
+      db.transaction((pdb) => this.getIdByNameAndAddMyProduct(pdb,name,qtty,expireDate,callback),() => alert("FAIL: Transaction getIdByNameAndAddMyProduct"),function() {
+        console.log("OK: Transaction getIdByNameAndAddMyProduct");
+      });
+    },
+
+    getIdByNameAndAddMyProduct: function (db,name,qtty,expireDate,callback) {
+      db.executeSql('SELECT * FROM ProductName WHERE name="' + name + '"', [],
+        (pdb,presults) => this.getIdByNameResultAndAddMyProduct(pdb,presults,name,qtty,expireDate,callback), () => alert("FAIL: SELECT FROM ProductName"));
+    },
+
+    getIdByNameResultAndAddMyProduct: function (db,results,name,qtty,expireDate,callback) {
+      if (results != undefined) {
+        var len = results.rows.length;
+        if (len > 0) {
+          this.addMyProduct(results.rows.item(0).product_id,qtty,expireDate,callback);
+        }
+        else {
+          alert('Produto "' + name + '" não cadastrado.');
+        }
+      }
+      else alert("Results is undefined! :B");
+    },
+
     addMyProduct: function (id,qtty,expireDate,callback) {
       db.transaction((pdb) => this.checkDuplicatesToAddMyProduct(pdb,id,qtty,expireDate,callback),() => alert("FAIL: Transaction checkDuplicatesToAddMyProduct"),function() {
         console.log("OK: Transaction checkDuplicatesToAddMyProduct");
@@ -82,14 +106,7 @@ var DatabaseManager = React.createClass({
           db.executeSql('INSERT INTO MyProduct (fk_product_id, quantity, expireDate) VALUES (' + id + ', ' + qtty + ', "' + expireDate + '");', [], () => this.addedSuccesfully(callback), () => alert("FAIL: Insert MyProduct"));
         }
       }
-      else alert("Results is undefined!");  
-    },
-
-    addDataFromJson: function (json) {
-      var addProductName = json.addProductName;
-      var addMyProduct = json.addMyProduct;
-      alert("PN " + addProductName.length);
-      alert("MP " + addMyProduct.length);
+      else alert("Results is undefined!");
     },
 
     addedSuccesfully: function (callback) {
