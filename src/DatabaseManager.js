@@ -85,6 +85,13 @@ var DatabaseManager = React.createClass({
       else alert("Results is undefined!");  
     },
 
+    addDataFromJson: function (json) {
+      var addProductName = json.addProductName;
+      var addMyProduct = json.addMyProduct;
+      alert("PN " + addProductName.length);
+      alert("MP " + addMyProduct.length);
+    },
+
     addedSuccesfully: function (callback) {
       console.log("OK: INSERT");
       callback();

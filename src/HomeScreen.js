@@ -20,6 +20,7 @@ var ListProducts = require("./ListProducts");
 var DatabaseManager = require("./DatabaseManager");
 
 var databaseManager = new DatabaseManager();
+var sampleUrl = 'https://raw.githubusercontent.com/leeohaddad/dont-let-it-rot-react/master/input.json';
 
 var HomeScreen = React.createClass({
   componentDidMount: function () {
@@ -30,6 +31,7 @@ var HomeScreen = React.createClass({
     databaseManager.openDatabase();
     this.updateCurrentList();
     this.updateProductsList();
+    this.getDataFromApi(sampleUrl);
   },
   updateCurrentList: function () {
     databaseManager.requestMyProductsList((data) => this.setCurrentList(data));
@@ -61,6 +63,19 @@ var HomeScreen = React.createClass({
       addProduct: false,
       listProducts: false
     };
+  },
+  /* fetch data from some API ; in this case it is from a static server, but could be from a RESTful API */
+  getDataFromApi: async function (url) {
+    var that = this;
+    try {
+      let response = await fetch(url);
+      let responseJson = await response.json();
+      that.databaseManager.addDataFromJson(responseJson);
+      return responseJson;
+    } catch(error) {
+      alert(error);
+      console.error(error);
+    }
   },
   render: function () {
     let MyProductsList = this.state.currList.map((a, i) => {
